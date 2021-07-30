@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <img width="50%" src="img/nodejs.svg" alt="node js logo" />
+          <h1 class="fragment">Lesson 2</h1>
+        </section>
+        <section>
+          <h2>Agenda</h2>
+          <ul>
+            <li class="fragment">Debug node</li>
+            <li class="fragment">CLI</li>
+            <li class="fragment">Event Loop</li>
+            <li class="fragment">Streams</li>
+            <li class="fragment">Buffers</li>
+          </ul>
+        </section>
+        <section>
+          <p>Debug</p>
+          <ul>
+            <li class="fragment">VSCode</li>
+            <li class="fragment">Idea</li>
+            <li class="fragment">Chrome dev tools</li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            Shebang
+            <p>
+              <a
+                href="https://en.wikipedia.org/wiki/Shebang_(Unix)"
+                target="_blank"
+                >en.wikipedia.org/wiki/Shebang_(Unix)</a
+              >
+            </p>
+          </section>
+          <section>
+            <pre><code class="text" data-trim data-noescape data-line-numbers="1|3">
+#!interpreter [optional-arg]
+
+# your code on your favorite language;
+            </code></pre>
+            <pre
+              class="fragment"
+            ><code class="text" data-trim data-line-numbers="1|2|3|5|6">
+#!/bin/sh
+#!/bin/bash
+#!/bin/python
+
+#!/usr/bin/env node
+#!/bin/false
+            </code></pre>
+            <div class="fragment">
+              Don't forget
+              <pre><code data-trim>
+              chmod +x &lt;you file&gt;
+            </code></pre>
+            </div>
+          </section>
+          <section>
+            <h3>Current folder</h3>
+            <p class="fragment">__dirname vs cwd()</p>
+            <h3 class="fragment">ES modules</h3>
+            <pre class="fragment"><code data-trim data-line-numbers="1-2|4">
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+            </code></pre>
+          </section>
+          <section>
+            process.argv
+            <pre class="fragment"><code data-trim data-noescape>
+import { argv } from 'process';
+
+// print process.argv
+argv.forEach((val, index) =&gt; {
+  console.log(`${index}: ${val}`);
+});
+            </code></pre>
+            <pre class="fragment"><code data-trim data-noescape>
+node process-args.js one two=three four
+            </code></pre>
+          </section>
+          <section>minimist, chalk, cowsayjs</section>
+          <section>
+            <h3>minimist</h3>
+            <pre><code data-trim>
+#!/usr/bin/env node
+
+import minimist from "minimist";
+
+const args = minimist(process.argv.slice(2));
+
+console.dir(args);
+            </code></pre>
+          </section>
+          <section>
+            <h3>cowsayjs</h3>
+            <pre><code data-trim>
+import { cowsay } from "cowsayjs";
+
+cowsay("English is not my native language", {
+  cow: "three-eyes",
+  mode: "w",
+  tongue: "U "
+});
+            </code></pre>
+          </section>
+          <section>
+            <pre><code data-trim>
+___________________________________
+< English is not my native language >
+ -----------------------------------
+        \  ^___^
+         \ (OOO)\_______
+           (___)\       )\/\
+            U   ||----w |
+                ||     ||
+            </code></pre>
+          </section>
+          <section>
+            <p>Chalk</p>
+            <pre><code data-trim>
+import chalk from 'chalk';
+const { log } = console;
+
+// Combine styled and normal strings
+            <li class="fragment">Idea</li>
+log(chalk.blue('Hello') + ' World' + chalk.red('!'));
+            </code></pre>
+          </section>
+          <section>
+            <p>List of libs for CLI</p>
+            <a href="https://habr.com/ru/post/309936/" target="_blank"
+              >habr.com/ru/post/309936/</a
+            >
+          </section>
+          <section>npm pre/post scripts</section>
+          <section>
+            <p>Pack your application to binary</p>
+            <a href="https://github.com/nexe/nexe" target="_blank"
+              >https://github.com/nexe/nexe</a
+            >
+            <p>
+              <img src="img/nexe.gif" alt="" />
+            </p>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Event loop</h2>
+          </section>
+          <section>
+            <img src="img/loop.png" alt="" />
+          </section>
+          <section>
+            <p>Best talk ever</p>
+            <a
+              href="https://www.youtube.com/watch?v=8aGhZQkoFbQ"
+              target="_blank"
+              >youtube.com/watch?v=8aGhZQkoFbQ</a
+            >
+          </section>
+          <section>
+            <img src="img/sync.png" alt="" />
+          </section>
+          <section>
+            <img src="img/async.png" alt="" />
+          </section>
+          <section>
+            <pre><code data-trim data-line-numbers="1-14|6|10|13|8|3|1">
+process.stdin.on("data", () =&gt; console.log(1));
+
+setTimeout(() =&gt; console.log(2), 0);
+
+new Promise((resolve) =&gt; {
+  console.log(3);
+  resolve();
+}).then(() =&gt; console.log(4));
+
+console.log(5);
+
+await new Promise((resolve) =&gt; {
+  console.log(6);
+});
+          </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Streams</h2>
+          </section>
+          <section>
+            <pre><code data-trim>
+const fs = require('fs').promises;
+
+function write(){
+    return fs.mkdir('./tmp').then(function(){
+        fs.writeFile('./tmp/foo.txt', 'Hello World');
+    }).catch((err) =&gt; {
+        /// handle error
+        console.log(err);
+    });
+}
+
+write();
+            </code></pre>
+          </section>
+        </section>
+        <section>Buffers</section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
