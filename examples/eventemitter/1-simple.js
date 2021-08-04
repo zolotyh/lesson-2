@@ -1,13 +1,13 @@
 const { EventEmitter } = require("events");
 
-var server = new EventEmitter();
+const server = new EventEmitter();
 
 server.on("request", function (request) {
-  request.approved = true;
+  console.log(request, 1);
 });
 
 server.on("request", function (request) {
-  console.log(request);
+  console.log(request, 2);
 });
 
 server.emit("request", { from: "Клиент" });

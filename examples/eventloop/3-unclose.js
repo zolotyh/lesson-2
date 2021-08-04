@@ -8,6 +8,9 @@ setTimeout(function () {
 
 server.on("close", () => console.log("close"));
 
-setInterval(function () {
+const interval = setInterval(function () {
   console.log(process.memoryUsage().heapUsed);
 }, 1000);
+
+interval.unref();
+interval.ref();

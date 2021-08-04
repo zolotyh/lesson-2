@@ -1,5 +1,6 @@
+//class Request
 function Request() {
-  var self = this;
+  const self = this;
 
   this.bigData = new Array(1e6).join("*");
 
@@ -13,6 +14,6 @@ function Request() {
 }
 
 setInterval(function () {
-  var request = new Request();
+  const request = new Request();
   console.log(process.memoryUsage().heapUsed);
-}, 200);
+}, 500);
