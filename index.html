@@ -100,6 +100,12 @@ argv.forEach((val, index) =&gt; {
 node process-args.js one two=three four
             </code></pre>
           </section>
+          <section>
+            <h3>The Twelve Factors</h3>
+            <a href="https://12factor.net/" target="_blank">12factor.net</a>
+          </section>
+          <section>process.env</section>
+          <section>https://www.npmjs.com/package/dotenv</section>
           <section>minimist, chalk, cowsayjs</section>
           <section>
             <h3>minimist</h3>
@@ -144,7 +150,6 @@ import chalk from 'chalk';
 const { log } = console;
 
 // Combine styled and normal strings
-            <li class="fragment">Idea</li>
 log(chalk.blue('Hello') + ' World' + chalk.red('!'));
             </code></pre>
           </section>
@@ -187,22 +192,70 @@ log(chalk.blue('Hello') + ' World' + chalk.red('!'));
             <img src="img/async.png" alt="" />
           </section>
           <section>
-            <pre><code data-trim data-line-numbers="1-14|6|10|13|8|3|1">
+            <img src="img/nodepriority.png" alt="" />
+          </section>
+          <section>
+            <pre><code data-trim data-line-numbers>
 process.stdin.on("data", () =&gt; console.log(1));
+process.stdin.on("close", () =&gt; console.log(2));
 
-setTimeout(() =&gt; console.log(2), 0);
+process.nextTick(() =&gt; console.log(3));
+
+setImmediate(() =&gt; console.log(4));
+
+setTimeout(() =&gt; console.log(5), 0);
 
 new Promise((resolve) =&gt; {
-  console.log(3);
-  resolve();
-}).then(() =&gt; console.log(4));
-
-console.log(5);
-
-await new Promise((resolve) =&gt; {
   console.log(6);
-});
+  resolve();
+}).then(() =&gt; console.log(7));
+
+console.log(8);
+
+(async () =&gt; {
+  await new Promise(() =&gt; {
+    console.log(9);
+  });
+})();
           </code></pre>
+          </section>
+        </section>
+        <section>
+          <pre><code data-trim data-line-numbers="10-13|11|15|17-21|19|4|13|8|1|6|2">
+process.stdin.on("data", () =&gt; console.log(1));
+process.stdin.on("close", () =&gt; console.log(2));
+
+process.nextTick(() =&gt; console.log(3));
+
+setImmediate(() =&gt; console.log(4));
+
+setTimeout(() =&gt; console.log(5), 0);
+
+new Promise((resolve) =&gt; {
+  console.log(6);
+  resolve();
+}).then(() =&gt; console.log(7));
+
+console.log(8);
+
+(async () =&gt; {
+  await new Promise(() =&gt; {
+    console.log(9);
+  });
+})();
+          </code></pre>
+        </section>
+        <section>
+          <section>EventEmitter</section>
+          <section>Examples</section>
+          <section>
+            <h3>conclusions</h3>
+            <ul>
+              <li class="fragment">on =&gt; event</li>
+              <li class="fragment">keeps order</li>
+              <li class="fragment">number of listeners</li>
+              <li class="fragment">error handling</li>
+            </ul>
           </section>
         </section>
         <section>
@@ -210,6 +263,7 @@ await new Promise((resolve) =&gt; {
             <h2>Streams</h2>
           </section>
           <section>
+            <h3>Problem of promises</h3>
             <pre><code data-trim>
 const fs = require('fs').promises;
 
